@@ -1,0 +1,24 @@
+{
+  "name": "polytale",
+  "version": "0.0.1",
+  "description": "A modular, configurable, and extensible website translation tool that integrates into any website.",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "keywords": [
+    "modular",
+    "configurable",
+    "translation",
+    "module"
+  ],
+  "author": "ReallistCC",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1"
+  }
+}
