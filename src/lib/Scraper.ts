@@ -32,7 +32,7 @@ export class Scraper {
   }
 
   recursiveTextExtraction(
-    elem: cheerio.Cheerio<cheerio.Element>,
+    elem: cheerio.Cheerio<cheerio.Node>,
     texts: { [selector: string]: string[] },
     $: cheerio.CheerioAPI,
     tags: string[]
@@ -41,14 +41,16 @@ export class Scraper {
       if ((el as any).type !== 'tag') {
         return;
       }
-      const $el = $(el);
+      const $el = $(el as cheerio.Element);
 
-      if (el.type === 'tag' && tags.includes(el.name)) {
+      if (el.type === 'tag' && tags.includes((el as cheerio.Element).name)) {
         const text = $el.text().trim();
 
         // Ignore elements with no meaningful text
         if (text !== '' && /[a-z0-9]/i.test(text)) {
-          const parentSelector = this.generateSelector(elem);
+          const parentSelector = this.generateSelector(
+            elem as cheerio.Cheerio<cheerio.Element>
+          );
           if (!texts[parentSelector]) {
             texts[parentSelector] = [];
           }
