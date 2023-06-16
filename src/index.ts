@@ -1,19 +1,20 @@
-import { Scraper } from './lib/Scraper';
-import * as fs from 'fs';
+import { Translator } from './lib/Translator';
+import { LanguageSelector } from './lib/LanguageSelector';
 
-async function main() {
-  // Create a new instance of the Scraper class
-  const scraper = new Scraper('https://itgsolution.net');
+// Since we're in a browser context, make sure the DOM is fully loaded before we start
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Create a new instance of the Translator class
+  // The endpoint is now your own server's /translate endpoint
+  const translator = new Translator('en', 'http://localhost:3000/translate');
 
-  // Scrape the webpage
-  const texts = await scraper.scrapeWebpage();
+  // Get the language select HTML element
+  const languageSelectElement = document.querySelector(
+    '#language-selector'
+  ) as HTMLSelectElement;
 
-  // Do something with the scraped texts...
-  fs.writeFileSync('output.json', JSON.stringify(texts, null, 2));
-}
+  // Create a new instance of the LanguageSelector class
+  new LanguageSelector(translator, languageSelectElement);
 
-// Run the main function
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
+  // Begin translating the page
+  translator.translatePage().catch(console.error);
 });
