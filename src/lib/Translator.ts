@@ -17,13 +17,20 @@ export class Translator extends EventEmitter {
   }
 
   public async translatePage(): Promise<void> {
-    const textNodes = this.getTextNodes(document.body);
-    for (const node of textNodes) {
-      try {
-        await this.translateElement(node);
-      } catch (error) {
-        console.error(`Error translating text: ${(error as Error).message}`);
-      }
+    const languageSelectorElement =
+      document.querySelector('#language-selector');
+    if (!languageSelectorElement) {
+      throw new Error('Language selector not found');
+    }
+
+    const textNodes = this.getTextNodes(document.body, languageSelectorElement);
+    const translationPromises = textNodes.map((node) =>
+      this.translateElement(node)
+    );
+    try {
+      await Promise.all(translationPromises);
+    } catch (error) {
+      console.error(`Error translating text: ${(error as Error).message}`);
     }
   }
 
@@ -35,15 +42,28 @@ export class Translator extends EventEmitter {
     }
   }
 
-  private getTextNodes(node: Node): Node[] {
+  private getTextNodes(node: Node, ignoreElement: Element): Node[] {
     const textNodes = [];
     const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null);
 
     let currentNode;
     while ((currentNode = walker.nextNode())) {
-      textNodes.push(currentNode);
+      if (!this.isDescendantOf(currentNode, ignoreElement)) {
+        textNodes.push(currentNode);
+      }
     }
     return textNodes;
+  }
+
+  private isDescendantOf(node: Node, element: Element): boolean {
+    let parent = node.parentNode;
+    while (parent) {
+      if (parent === element) {
+        return true;
+      }
+      parent = parent.parentNode;
+    }
+    return false;
   }
 
   private async fetchTranslation(text: string): Promise<string> {

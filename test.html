@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Translation</title>
+    <script src="/dist/bundle.js" defer></script>
+    <!-- Path to your compiled JavaScript -->
+  </head>
+  <body>
+    <p>Hello world!</p>
+    <p>This is a test paragraph for the translation widget.</p>
+    <p style="display: none">
+      This paragraph should not be translated because it is not visible.
+    </p>
+
+    <label for="language-selector">Select a language:</label>
+    <select id="language-selector">
+      <option value="en">English</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <!-- Add more languages here -->
+    </select>
+  </body>
+</html>

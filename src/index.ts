@@ -3,6 +3,7 @@ import { LanguageSelector } from './lib/LanguageSelector';
 
 // Since we're in a browser context, make sure the DOM is fully loaded before we start
 document.addEventListener('DOMContentLoaded', (event) => {
+  console.log('DOM content loaded');
   // Create a new instance of the Translator class
   // The endpoint is now your own server's /translate endpoint
   const translator = new Translator('en', 'http://localhost:3000/translate');

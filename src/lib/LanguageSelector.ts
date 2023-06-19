@@ -8,6 +8,12 @@ export class LanguageSelector {
     this.translator = translator;
     this.element = element;
 
+    // Add event listener for 'languageChange' event
+    this.translator.on('languageChange', () => {
+      // Translate the page when the language changes
+      this.translator.translatePage().catch(console.error);
+    });
+
     this.element.addEventListener('change', this.handleLanguageChange);
   }
 
